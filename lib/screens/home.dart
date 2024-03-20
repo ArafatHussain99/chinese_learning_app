@@ -1,5 +1,7 @@
+import 'package:chinese_learning_app/dummy/dummy_data.dart';
 import 'package:chinese_learning_app/global_variables/global_colors.dart';
 import 'package:chinese_learning_app/provider/provider.dart';
+import 'package:chinese_learning_app/screens/quiz_page.dart';
 import 'package:chinese_learning_app/screens/words_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,7 +81,7 @@ class HomePageState extends ConsumerState<HomePage> {
                             onTap: () {
                               Fluttertoast.showToast(
                                   msg:
-                                      'You have 0 stars. Learn more words to earn more stars.');
+                                      'You have ${ref.read(score)} stars. Learn more words to earn more stars.');
                             },
                             child: Container(
                               padding: const EdgeInsets.all(8),
@@ -129,10 +131,14 @@ class HomePageState extends ConsumerState<HomePage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Fluttertoast.showToast(
-                              msg:
-                                  'You have to gather atleast 150 stars first to start challenges.',
-                            );
+                            if (ref.read(score) < DummyData.cardData.length) {
+                              Fluttertoast.showToast(
+                                msg:
+                                    'You have to gather atleast ${DummyData.cardData.length} stars first to start challenges.',
+                              );
+                            } else {
+                              Navigator.pushNamed(context, QuizScreen.id);
+                            }
                           },
                           child: Container(
                             padding: const EdgeInsets.all(8),
@@ -191,16 +197,29 @@ class HomePageState extends ConsumerState<HomePage> {
                     children: [
                       GestureDetector(
                           onTap: () {
-                            Fluttertoast.showToast(
-                                msg: 'Please complete level 1 first');
+                            if (ref.read(score) < DummyData.cardData.length) {
+                              Fluttertoast.showToast(
+                                  msg: 'Please complete level 1 first');
+                              print(
+                                  'Tapppedd ${ref.read(score)}  ${DummyData.cardData.length}');
+                            } else {
+                              Fluttertoast.showToast(msg: 'Coming soon..');
+                            }
                           },
                           child: StudyCard(
-                            color: Color.fromARGB(255, 109, 91, 201)
-                                .withOpacity(0.5),
+                            color: ref.read(score) >= DummyData.cardData.length
+                                ? Color.fromARGB(255, 109, 91, 201)
+                                : Color.fromARGB(255, 109, 91, 201)
+                                    .withOpacity(0.5),
                             text: 'Level 2',
-                            textColor: Colors.white.withOpacity(0.5),
+                            textColor:
+                                ref.read(score) >= DummyData.cardData.length
+                                    ? Colors.white
+                                    : Colors.white.withOpacity(0.5),
                           )),
-                      const Icon(Icons.lock),
+                      ref.read(score) >= DummyData.cardData.length
+                          ? Container()
+                          : const Icon(Icons.lock),
                     ],
                   ),
                   const SizedBox(

@@ -4,6 +4,7 @@ import 'package:chinese_learning_app/provider/provider.dart';
 import 'package:chinese_learning_app/widgets/custom_flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class WordsScreen extends ConsumerStatefulWidget {
   static const String id = 'words_page';
@@ -41,11 +42,13 @@ class WordsScreenState extends ConsumerState<WordsScreen> {
       body: Center(
         child: SafeArea(
           child: Center(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Stack(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('    Progress'),
+                  Stack(
                     children: [
                       Container(
                         height: 30,
@@ -58,7 +61,8 @@ class WordsScreenState extends ConsumerState<WordsScreen> {
                       ),
                       Container(
                         height: 30,
-                        width: 100,
+                        width: (MediaQuery.of(context).size.width - 32) *
+                            (total / DummyData.cardData.length),
                         decoration: BoxDecoration(
                             color: GlobalColors.primaryLight,
                             borderRadius: BorderRadius.circular(20)),
@@ -72,49 +76,74 @@ class WordsScreenState extends ConsumerState<WordsScreen> {
                               '$total',
                               style: const TextStyle(color: Colors.white),
                             ),
-                            const Text(
-                              '/10  ❤️',
-                              style: TextStyle(color: GlobalColors.fontLight),
+                            Text(
+                              '/${DummyData.cardData.length}  🌟',
+                              style: const TextStyle(
+                                  color: GlobalColors.fontLight),
                             )
                           ],
                         ),
                       )
                     ],
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: GridView.builder(
-                        shrinkWrap: true,
-                        itemCount: cardData.length + 1,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                                childAspectRatio: 1.6),
-                        itemBuilder: (context, index) {
-                          return index == cardData.length
-                              ? const SizedBox()
-                              : Opacity(
-                                  opacity: total >= index ? 1 : 0.5,
-                                  child: CustomFlipCard(
-                                    word: cardData[index]['word'].toString(),
-                                    chinese:
-                                        cardData[index]['chinese'].toString(),
-                                    soundAsset: cardData[index]['soundAsset']
-                                        .toString(),
-                                    meaning:
-                                        cardData[index]['meaning'].toString(),
-                                    image: cardData[index]['image'].toString(),
-                                    color: cardData[index]['color'] as Color,
-                                  ),
-                                );
-                        }),
+                  const SizedBox(
+                    height: 16,
                   ),
-                )
-              ],
+                  Expanded(
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: DummyData.cardData.length + 1,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 1.6),
+                      itemBuilder: (context, index) {
+                        return index == DummyData.cardData.length
+                            ? const SizedBox()
+                            : Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Opacity(
+                                    opacity: total >= index ? 1 : 0.5,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                'Please read all the previous words to get the next word.');
+                                      },
+                                      child: CustomFlipCard(
+                                        word: DummyData.cardData[index]['word']
+                                            .toString(),
+                                        chinese: DummyData.cardData[index]
+                                                ['chinese']
+                                            .toString(),
+                                        soundAsset: DummyData.cardData[index]
+                                                ['soundAsset']
+                                            .toString(),
+                                        meaning: DummyData.cardData[index]
+                                                ['meaning']
+                                            .toString(),
+                                        image: DummyData.cardData[index]
+                                                ['image']
+                                            .toString(),
+                                        color: DummyData.cardData[index]
+                                            ['color'] as Color,
+                                        index: index,
+                                      ),
+                                    ),
+                                  ),
+                                  total < index
+                                      ? const Icon(Icons.lock)
+                                      : Container(),
+                                ],
+                              );
+                      },
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

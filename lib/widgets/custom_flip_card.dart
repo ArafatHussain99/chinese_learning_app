@@ -1,3 +1,4 @@
+import 'package:chinese_learning_app/dummy/dummy_data.dart';
 import 'package:chinese_learning_app/provider/provider.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class CustomFlipCard extends ConsumerStatefulWidget {
     required this.chinese,
     required this.image,
     required this.color,
+    required this.index,
   });
   final String soundAsset;
   final String meaning;
@@ -20,6 +22,7 @@ class CustomFlipCard extends ConsumerStatefulWidget {
   final String chinese;
   final String image;
   final Color color;
+  final int index;
 
   @override
   CustomFlipCardState createState() => CustomFlipCardState();
@@ -35,8 +38,14 @@ class CustomFlipCardState extends ConsumerState<CustomFlipCard> {
         player.stop();
         player = AudioPlayer()..setAsset(widget.soundAsset);
         player.play();
-        ref.read(score.notifier).state = ref.read(score) + 1;
       },
+      onFlipDone: (isFront) {
+        if (DummyData.cardData[widget.index]['read'] == false) {
+          DummyData.cardData[widget.index]['read'] = true;
+          ref.read(score.notifier).state = ref.read(score) + 1;
+        }
+      },
+      flipOnTouch: ref.read(score) >= widget.index,
       fill: Fill.fillBack,
       side: CardSide.FRONT,
       back: Container(

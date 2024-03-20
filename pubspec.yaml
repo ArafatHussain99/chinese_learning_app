@@ -42,6 +42,7 @@ dependencies:
   fluttertoast: ^8.2.4
   lottie: ^3.1.0
   flutter_custom_clippers: ^2.1.0
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
