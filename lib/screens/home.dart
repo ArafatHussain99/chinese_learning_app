@@ -6,6 +6,7 @@ import 'package:chinese_learning_app/screens/words_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   static const String id = 'home_page';
@@ -16,6 +17,29 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class HomePageState extends ConsumerState<HomePage> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  @override
+  void initState() {
+    super.initState();
+
+    getScore();
+  }
+
+  void getScore() async {
+    ref.read(score.notifier).state =
+        await _prefs.then((SharedPreferences prefs) {
+      final int? score = prefs.getInt('score');
+      if (score != null) {
+        for (int i = 0; i < score; i++) {
+          DummyData.cardData[i]['read'] = true;
+        }
+        return score;
+      }
+      return 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     int total = ref.watch(score);
@@ -200,16 +224,17 @@ class HomePageState extends ConsumerState<HomePage> {
                             if (ref.read(score) < DummyData.cardData.length) {
                               Fluttertoast.showToast(
                                   msg: 'Please complete level 1 first');
-                              print(
-                                  'Tapppedd ${ref.read(score)}  ${DummyData.cardData.length}');
+                            } else if (ref.read(challengesDone) < 3) {
+                              Fluttertoast.showToast(
+                                  msg: 'Please complete the challenges first');
                             } else {
                               Fluttertoast.showToast(msg: 'Coming soon..');
                             }
                           },
                           child: StudyCard(
                             color: ref.read(score) >= DummyData.cardData.length
-                                ? Color.fromARGB(255, 109, 91, 201)
-                                : Color.fromARGB(255, 109, 91, 201)
+                                ? const Color.fromARGB(255, 109, 91, 201)
+                                : const Color.fromARGB(255, 109, 91, 201)
                                     .withOpacity(0.5),
                             text: 'Level 2',
                             textColor:
@@ -234,7 +259,7 @@ class HomePageState extends ConsumerState<HomePage> {
                                 msg: 'Please complete level 1 first');
                           },
                           child: StudyCard(
-                            color: Color.fromARGB(255, 210, 86, 136)
+                            color: const Color.fromARGB(255, 210, 86, 136)
                                 .withOpacity(0.5),
                             text: 'Level 3',
                             textColor: Colors.white.withOpacity(0.5),

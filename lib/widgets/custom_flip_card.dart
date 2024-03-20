@@ -4,6 +4,7 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomFlipCard extends ConsumerStatefulWidget {
   const CustomFlipCard({
@@ -29,6 +30,13 @@ class CustomFlipCard extends ConsumerStatefulWidget {
 }
 
 class CustomFlipCardState extends ConsumerState<CustomFlipCard> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  Future<void> saveScore() async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setInt('score', ref.read(score));
+  }
+
   @override
   Widget build(BuildContext context) {
     AudioPlayer player = AudioPlayer();
@@ -43,6 +51,7 @@ class CustomFlipCardState extends ConsumerState<CustomFlipCard> {
         if (DummyData.cardData[widget.index]['read'] == false) {
           DummyData.cardData[widget.index]['read'] = true;
           ref.read(score.notifier).state = ref.read(score) + 1;
+          saveScore();
         }
       },
       flipOnTouch: ref.read(score) >= widget.index,
@@ -77,7 +86,7 @@ class CustomFlipCardState extends ConsumerState<CustomFlipCard> {
                   height: 140,
                   child: Image.asset(
                     widget.image,
-                    fit: BoxFit.fitHeight,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -96,7 +105,7 @@ class CustomFlipCardState extends ConsumerState<CustomFlipCard> {
               color: Colors.black.withOpacity(0.3),
               spreadRadius: 1,
               blurRadius: 4,
-              offset: const Offset(1, 1), // changes position of shadow
+              offset: const Offset(1, 1),
             ),
           ],
         ),

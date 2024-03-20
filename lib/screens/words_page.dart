@@ -74,7 +74,11 @@ class WordsScreenState extends ConsumerState<WordsScreen> {
                           children: [
                             Text(
                               '$total',
-                              style: const TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                  color: total / DummyData.cardData.length >=
+                                          (1 / 12)
+                                      ? Colors.white
+                                      : Colors.black),
                             ),
                             Text(
                               '/${DummyData.cardData.length}  🌟',
