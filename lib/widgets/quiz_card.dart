@@ -25,8 +25,8 @@ class _QuizCardState extends State<QuizCard> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Stack(
-        alignment: Alignment.bottomCenter,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -259,7 +259,7 @@ class _QuizCardState extends State<QuizCard> {
                       ? GlobalColors.primary
                       : GlobalColors.primary.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(20)),
-              child: Expanded(
+              child: Center(
                 child: Text(
                   buttonText,
                   style: const TextStyle(color: Colors.white),

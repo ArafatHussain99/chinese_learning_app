@@ -6,7 +6,6 @@ import 'package:chinese_learning_app/screens/words_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../dummy/dummy_data.dart';
 import '../provider/provider.dart';
@@ -20,13 +19,6 @@ class TopicDetailPage extends ConsumerStatefulWidget {
 }
 
 class TopicDetailPageState extends ConsumerState {
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-  Future<void> saveScore() async {
-    final SharedPreferences prefs = await _prefs;
-    prefs.setInt('score', ref.read(score));
-  }
-
   @override
   Widget build(BuildContext context) {
     ref.watch(score);
@@ -65,7 +57,6 @@ class TopicDetailPageState extends ConsumerState {
                               msg: 'Please complete level 1 first');
                         } else {
                           ref.read(score.notifier).state = ref.read(score) + 1;
-                          saveScore();
                           Navigator.pushNamed(context, PhrasesScreen.id);
                         }
                       },
