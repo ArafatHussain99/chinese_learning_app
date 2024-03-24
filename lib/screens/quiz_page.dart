@@ -1,3 +1,4 @@
+import 'package:chinese_learning_app/widgets/quiz_card.dart';
 import 'package:flutter/material.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -19,7 +20,7 @@ class _QuizScreenState extends State<QuizScreen> {
         centerTitle: true,
         shadowColor: Colors.black,
       ),
-      body: const Center(child: Text('Take a chill pill')),
+      body: QuizCard(),
     );
   }
 }
