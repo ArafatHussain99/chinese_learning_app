@@ -1,18 +1,21 @@
+import 'package:chinese_learning_app/dummy/dummy_data.dart';
 import 'package:chinese_learning_app/dummy/quiz_data.dart';
 import 'package:chinese_learning_app/global_variables/global_colors.dart';
 import 'package:chinese_learning_app/screens/home.dart';
 import 'package:chinese_learning_app/screens/quiz_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class QuizCard extends StatefulWidget {
+class QuizCard extends ConsumerStatefulWidget {
   const QuizCard({super.key});
 
   @override
-  State<QuizCard> createState() => _QuizCardState();
+  _QuizCardState createState() => _QuizCardState();
 }
 
-class _QuizCardState extends State<QuizCard> {
+class _QuizCardState extends ConsumerState {
   int quiznNumber = 0;
   bool option1Selected = false;
   bool option2Selected = false;
@@ -21,6 +24,14 @@ class _QuizCardState extends State<QuizCard> {
   String selectedOptionBackup = '';
   String buttonText = 'Submit';
   int score = 0;
+
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  Future<void> saveScore(int score) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setInt('score', score);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -179,7 +190,7 @@ class _QuizCardState extends State<QuizCard> {
                                         style: TextStyle(color: Colors.green),
                                       ),
                                       Text(
-                                        'Meaning: ${quizData.quiz[0]['meaning']}',
+                                        'Meaning: ${quizData.quiz[quiznNumber]['meaning']}',
                                       ),
                                     ],
                                   )
@@ -193,7 +204,10 @@ class _QuizCardState extends State<QuizCard> {
                                         style: TextStyle(color: Colors.red),
                                       ),
                                       Text(
-                                        'Meaning: ${quizData.quiz[0]['meaning']}',
+                                        'Right Answer: ${quizData.quiz[quiznNumber]['answer']}',
+                                      ),
+                                      Text(
+                                        'Meaning: ${quizData.quiz[quiznNumber]['meaning']}',
                                       ),
                                     ],
                                   ),
@@ -208,21 +222,29 @@ class _QuizCardState extends State<QuizCard> {
                   context: context,
                   builder: (context) => AlertDialog(
                     title: const Text('Score'),
-                    content: Text('Your score is $score'),
+                    content: score < 4
+                        ? Text(
+                            'Your score is $score. You have to watch the video again to re-take the quiz')
+                        : Text('Your score is $score'),
                     actions: [
                       TextButton(
                         onPressed: () {
                           Navigator.pushNamed(context, HomePage.id);
+                          if (score < 4) {
+                            saveScore(DummyData.cardData.length);
+                          }
                         },
                         child: const Text('Home'),
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, QuizScreen.id, (route) => false);
-                        },
-                        child: const Text('Re-take quiz'),
-                      ),
+                      score > 3
+                          ? TextButton(
+                              onPressed: () {
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, QuizScreen.id, (route) => false);
+                              },
+                              child: const Text('Re-take quiz'),
+                            )
+                          : Container(),
                     ],
                   ),
                 );
@@ -243,9 +265,11 @@ class _QuizCardState extends State<QuizCard> {
                   } else {
                     setState(() {
                       buttonText = 'Next';
-                      selectedOption == quizData.quiz[quiznNumber]['answer']
-                          ? {score = score++}
-                          : null;
+                      if (selectedOption ==
+                          quizData.quiz[quiznNumber]['answer']) {
+                        score = score + 1;
+                        print(score);
+                      }
                     });
                   }
                 }

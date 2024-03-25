@@ -20,7 +20,7 @@ class _QuizScreenState extends State<QuizScreen> {
         centerTitle: true,
         shadowColor: Colors.black,
       ),
-      body: QuizCard(),
+      body: const QuizCard(),
     );
   }
 }

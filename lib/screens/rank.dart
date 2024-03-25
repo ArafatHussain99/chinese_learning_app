@@ -1,14 +1,17 @@
+import 'package:chinese_learning_app/global_variables/global_colors.dart';
+import 'package:chinese_learning_app/provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RankScreen extends StatefulWidget {
+class RankScreen extends ConsumerStatefulWidget {
   static const id = '/rankscreen';
   const RankScreen({super.key});
 
   @override
-  State<RankScreen> createState() => _QuizScreenState();
+  QuizScreenState createState() => QuizScreenState();
 }
 
-class _QuizScreenState extends State<RankScreen> {
+class QuizScreenState extends ConsumerState {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,11 +29,9 @@ class _QuizScreenState extends State<RankScreen> {
           Container(
             decoration: const BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    offset: Offset(1, 1),
-                  ),
+                  BoxShadow(offset: Offset(1, 1), color: Colors.grey),
                 ],
-                color: Colors.grey,
+                color: GlobalColors.purpleLight,
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             child: const Padding(
               padding: EdgeInsets.all(16.0),
@@ -59,11 +60,9 @@ class _QuizScreenState extends State<RankScreen> {
           Container(
             decoration: const BoxDecoration(
                 boxShadow: [
-                  BoxShadow(
-                    offset: Offset(1, 1),
-                  ),
+                  BoxShadow(offset: Offset(1, 1), color: Colors.grey),
                 ],
-                color: Colors.grey,
+                color: GlobalColors.purpleLight,
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             child: const Padding(
               padding: EdgeInsets.all(16.0),
@@ -91,27 +90,29 @@ class _QuizScreenState extends State<RankScreen> {
           ),
           Container(
             decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    offset: Offset(1, 1),
-                  ),
-                ],
-                color: Colors.grey,
-                borderRadius: BorderRadius.all(Radius.circular(20))),
-            child: const Padding(
-              padding: EdgeInsets.all(16.0),
+              boxShadow: [
+                BoxShadow(offset: Offset(1, 1), color: Colors.grey),
+              ],
+              color: GlobalColors.creme,
+              borderRadius: BorderRadius.all(
+                Radius.circular(20),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'You',
-                        style: TextStyle(color: Colors.yellow, fontSize: 20),
+                        style: TextStyle(color: Colors.black, fontSize: 20),
                       ),
                       Text(
-                        '100',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        '${ref.read(score)}',
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 20),
                       )
                     ],
                   ),

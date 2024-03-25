@@ -73,7 +73,7 @@ class WordsScreenState extends ConsumerState<WordsScreen> {
                         child: Row(
                           children: [
                             Text(
-                              '$total',
+                              total > 20 ? '20' : '$total',
                               style: TextStyle(
                                   color: total / DummyData.cardData.length >=
                                           (1 / 12)
