@@ -73,4 +73,41 @@ class quizData {
       'meaning': 'Have u been to zanmen hospital before?'
     }
   ];
+  static final friendsQuiz = [
+    {
+      'option1': '我最近',
+      'option2': '开始',
+      'option3': '玩游戏',
+      'answer': 'ABC',
+      'meaning': 'I recenty started playing games.'
+    },
+    {
+      'option1': '大量时间和精力',
+      'option2': '导演花了',
+      'option3': '制作每一个场景',
+      'answer': 'BAC',
+      'meaning': 'The director spent a lot of time to make every scene.'
+    },
+    {
+      'option1': '没什么计划',
+      'option2': '这个周末',
+      'option3': '正好我也',
+      'answer': 'BCA',
+      'meaning': 'Oops pay attention to your health don’t try too hard.'
+    },
+    {
+      'option1': '哎呀',
+      'option2': '要注意身体啊',
+      'option3': '别太拼了',
+      'answer': 'ABC',
+      'meaning': 'In fact , I also just arrived in this city.'
+    },
+    {
+      'option1': '我会',
+      'option2': '好度的',
+      'option3': '把握 ',
+      'answer': 'ACB',
+      'meaning': 'I can grasp at a good level.'
+    }
+  ];
 }

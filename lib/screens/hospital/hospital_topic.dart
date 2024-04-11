@@ -60,7 +60,7 @@ class TopicDetailPageState extends ConsumerState {
                           Fluttertoast.showToast(
                               msg: 'Please complete level 1 first');
                         } else {
-                          ref.read(classroomDone.notifier).state = true;
+                          ref.read(hospitalDone.notifier).state = true;
                           Navigator.pushNamed(
                               context, HospitalPhrasesScreen.id);
                         }
@@ -94,7 +94,7 @@ class TopicDetailPageState extends ConsumerState {
                 children: [
                   GestureDetector(
                       onTap: () {
-                        if (!ref.read(classroomDone)) {
+                        if (!ref.read(hospitalDone)) {
                           Fluttertoast.showToast(
                               msg: 'Please complete level 1 and 2 first');
                         } else {
@@ -102,18 +102,16 @@ class TopicDetailPageState extends ConsumerState {
                         }
                       },
                       child: StudyCard(
-                        color: ref.read(classroomDone)
+                        color: ref.read(hospitalDone)
                             ? const Color.fromARGB(255, 210, 86, 136)
                             : const Color.fromARGB(255, 210, 86, 136)
                                 .withOpacity(0.5),
                         text: 'Test',
-                        textColor: ref.read(classroomDone)
+                        textColor: ref.read(hospitalDone)
                             ? Colors.white
                             : Colors.white.withOpacity(0.5),
                       )),
-                  ref.read(classroomDone)
-                      ? Container()
-                      : const Icon(Icons.lock),
+                  ref.read(hospitalDone) ? Container() : const Icon(Icons.lock),
                 ],
               ),
             ],

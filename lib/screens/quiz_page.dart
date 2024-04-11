@@ -26,7 +26,9 @@ class QuizScreenState extends ConsumerState {
       body: QuizCard(
         quizData: ref.read(topic) == 'classroom'
             ? quizData.classroomQuiz
-            : quizData.hospitalQuiz,
+            : ref.read(topic) == 'hospital'
+                ? quizData.hospitalQuiz
+                : quizData.friendsQuiz,
       ),
     );
   }

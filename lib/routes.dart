@@ -1,3 +1,6 @@
+import 'package:chinese_learning_app/screens/friends/friends_phrases.dart';
+import 'package:chinese_learning_app/screens/friends/friends_topic.dart';
+import 'package:chinese_learning_app/screens/friends/friends_words_page.dart';
 import 'package:chinese_learning_app/screens/home.dart';
 import 'package:chinese_learning_app/screens/classroom/phrases.dart';
 import 'package:chinese_learning_app/screens/hospital/hospital_phrases.dart';
@@ -35,6 +38,22 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => const HospitalWordsScreen(),
+      );
+
+    case FriendsPhrasesScreen.id:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const FriendsPhrasesScreen(),
+      );
+    case FriendsTopicDetailPage.id:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const FriendsTopicDetailPage(),
+      );
+    case FriendsWordsScreen.id:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => const FriendsWordsScreen(),
       );
     case QuizScreen.id:
       return MaterialPageRoute(

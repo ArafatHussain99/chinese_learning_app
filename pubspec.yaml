@@ -73,6 +73,8 @@ flutter:
     - assets/images/classroom/
     - assets/sound_clips/hospital/
     - assets/images/hospital/
+    - assets/sound_clips/friends/
+    - assets/images/friends/
     - assets/images/
     - assets/phrases/
     - assets/lottie/

@@ -192,6 +192,7 @@ class _QuizCardState extends ConsumerState<QuizCard> {
                                       ),
                                       Text(
                                         'Meaning: ${widget.quizData[quiznNumber]['meaning']}',
+                                        textAlign: TextAlign.center,
                                       ),
                                     ],
                                   )

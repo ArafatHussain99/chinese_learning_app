@@ -1,7 +1,9 @@
 import 'package:chinese_learning_app/dummy/dummy_data.dart';
+import 'package:chinese_learning_app/dummy/dummy_data_friends.dart';
 import 'package:chinese_learning_app/dummy/dummy_data_hospital.dart';
 import 'package:chinese_learning_app/global_variables/global_colors.dart';
 import 'package:chinese_learning_app/provider/provider.dart';
+import 'package:chinese_learning_app/screens/friends/friends_topic.dart';
 import 'package:chinese_learning_app/screens/hospital/hospital_topic.dart';
 import 'package:chinese_learning_app/screens/rank.dart';
 import 'package:chinese_learning_app/screens/classroom/topic.dart';
@@ -36,9 +38,13 @@ class HomePageState extends ConsumerState<HomePage> {
         for (int i = 0; i < score; i++) {
           if (i < 20) {
             DummyData.cardData[i]['read'] = true;
-          } else {
+          } else if (i < 50) {
             DummyDataHospital.cardData[i - DummyData.cardData.length]['read'] =
                 true;
+          } else {
+            DummyDataFriends.cardData[i -
+                DummyData.cardData.length -
+                DummyDataHospital.cardData.length]['read'] = true;
           }
         }
         return score;
@@ -250,17 +256,23 @@ class HomePageState extends ConsumerState<HomePage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          ref.read(topic.notifier).state = 'friends';
-                          Fluttertoast.showToast(msg: 'Coming soon');
+                          if (total < 50) {
+                            Fluttertoast.showToast(
+                                msg: 'Please complete the topics above first');
+                          } else {
+                            ref.read(topic.notifier).state = 'friends';
+                            Navigator.pushNamed(
+                                context, FriendsTopicDetailPage.id);
+                          }
                         },
                         child: StudyCard(
                           color: Colors.white,
                           text: 'Friends',
-                          textColor: total > 60
+                          textColor: total >= 50
                               ? Colors.black
                               : Colors.black.withOpacity(0.6),
                           image: 'assets/images/friends.png',
-                          opacity: total > 60 ? 0.6 : 0.4,
+                          opacity: total >= 50 ? 0.6 : 0.4,
                         ),
                       ),
                     ],
