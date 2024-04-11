@@ -1,15 +1,18 @@
+import 'package:chinese_learning_app/dummy/quiz_data.dart';
+import 'package:chinese_learning_app/provider/provider.dart';
 import 'package:chinese_learning_app/widgets/quiz_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class QuizScreen extends StatefulWidget {
+class QuizScreen extends ConsumerStatefulWidget {
   static const id = '/quiz';
   const QuizScreen({super.key});
 
   @override
-  State<QuizScreen> createState() => _QuizScreenState();
+  QuizScreenState createState() => QuizScreenState();
 }
 
-class _QuizScreenState extends State<QuizScreen> {
+class QuizScreenState extends ConsumerState {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +23,11 @@ class _QuizScreenState extends State<QuizScreen> {
         centerTitle: true,
         shadowColor: Colors.black,
       ),
-      body: const QuizCard(),
+      body: QuizCard(
+        quizData: ref.read(topic) == 'classroom'
+            ? quizData.classroomQuiz
+            : quizData.hospitalQuiz,
+      ),
     );
   }
 }

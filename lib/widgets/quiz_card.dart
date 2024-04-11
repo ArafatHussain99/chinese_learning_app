@@ -1,5 +1,4 @@
 import 'package:chinese_learning_app/dummy/dummy_data.dart';
-import 'package:chinese_learning_app/dummy/quiz_data.dart';
 import 'package:chinese_learning_app/global_variables/global_colors.dart';
 import 'package:chinese_learning_app/screens/home.dart';
 import 'package:chinese_learning_app/screens/quiz_page.dart';
@@ -9,13 +8,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QuizCard extends ConsumerStatefulWidget {
-  const QuizCard({super.key});
+  const QuizCard({super.key, required this.quizData});
+
+  final List<Map<String, String>> quizData;
 
   @override
   _QuizCardState createState() => _QuizCardState();
 }
 
-class _QuizCardState extends ConsumerState {
+class _QuizCardState extends ConsumerState<QuizCard> {
   int quiznNumber = 0;
   bool option1Selected = false;
   bool option2Selected = false;
@@ -91,8 +92,8 @@ class _QuizCardState extends ConsumerState {
                                 : Colors.white,
                             border: Border.all(),
                             borderRadius: BorderRadius.circular(20)),
-                        child:
-                            Text('A. ${quizData.quiz[quiznNumber]['option1']}'),
+                        child: Text(
+                            'A. ${widget.quizData[quiznNumber]['option1']}'),
                       ),
                     ),
                   ),
@@ -130,8 +131,8 @@ class _QuizCardState extends ConsumerState {
                                 : Colors.white,
                             border: Border.all(),
                             borderRadius: BorderRadius.circular(20)),
-                        child:
-                            Text('B. ${quizData.quiz[quiznNumber]['option2']}'),
+                        child: Text(
+                            'B. ${widget.quizData[quiznNumber]['option2']}'),
                       ),
                     ),
                   )
@@ -165,7 +166,7 @@ class _QuizCardState extends ConsumerState {
                           : Colors.white,
                       border: Border.all(),
                       borderRadius: BorderRadius.circular(20)),
-                  child: Text('C. ${quizData.quiz[quiznNumber]['option3']}'),
+                  child: Text('C. ${widget.quizData[quiznNumber]['option3']}'),
                 ),
               ),
               selectedOption == ''
@@ -179,7 +180,7 @@ class _QuizCardState extends ConsumerState {
                         buttonText == 'Submit'
                             ? Container()
                             : selectedOption ==
-                                    quizData.quiz[quiznNumber]['answer']
+                                    widget.quizData[quiznNumber]['answer']
                                 ? Column(
                                     children: [
                                       const SizedBox(
@@ -190,7 +191,7 @@ class _QuizCardState extends ConsumerState {
                                         style: TextStyle(color: Colors.green),
                                       ),
                                       Text(
-                                        'Meaning: ${quizData.quiz[quiznNumber]['meaning']}',
+                                        'Meaning: ${widget.quizData[quiznNumber]['meaning']}',
                                       ),
                                     ],
                                   )
@@ -204,10 +205,11 @@ class _QuizCardState extends ConsumerState {
                                         style: TextStyle(color: Colors.red),
                                       ),
                                       Text(
-                                        'Right Answer: ${quizData.quiz[quiznNumber]['answer']}',
+                                        'Right Answer: ${widget.quizData[quiznNumber]['answer']}',
                                       ),
                                       Text(
-                                        'Meaning: ${quizData.quiz[quiznNumber]['meaning']}',
+                                        'Meaning: ${widget.quizData[quiznNumber]['meaning']}',
+                                        textAlign: TextAlign.center,
                                       ),
                                     ],
                                   ),
@@ -266,7 +268,7 @@ class _QuizCardState extends ConsumerState {
                     setState(() {
                       buttonText = 'Next';
                       if (selectedOption ==
-                          quizData.quiz[quiznNumber]['answer']) {
+                          widget.quizData[quiznNumber]['answer']) {
                         score = score + 1;
                         print(score);
                       }

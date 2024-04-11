@@ -1,4 +1,3 @@
-import 'package:chinese_learning_app/dummy/dummy_data.dart';
 import 'package:chinese_learning_app/provider/provider.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
@@ -7,16 +6,16 @@ import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomFlipCard extends ConsumerStatefulWidget {
-  const CustomFlipCard({
-    super.key,
-    required this.soundAsset,
-    required this.meaning,
-    required this.word,
-    required this.chinese,
-    required this.image,
-    required this.color,
-    required this.index,
-  });
+  const CustomFlipCard(
+      {super.key,
+      required this.soundAsset,
+      required this.meaning,
+      required this.word,
+      required this.chinese,
+      required this.image,
+      required this.color,
+      required this.index,
+      required this.data});
   final String soundAsset;
   final String meaning;
   final String word;
@@ -24,6 +23,7 @@ class CustomFlipCard extends ConsumerStatefulWidget {
   final String image;
   final Color color;
   final int index;
+  final List<Map<String, Object>> data;
 
   @override
   CustomFlipCardState createState() => CustomFlipCardState();
@@ -48,8 +48,8 @@ class CustomFlipCardState extends ConsumerState<CustomFlipCard> {
         player.play();
       },
       onFlipDone: (isFront) {
-        if (DummyData.cardData[widget.index]['read'] == false) {
-          DummyData.cardData[widget.index]['read'] = true;
+        if (widget.data[widget.index]['read'] == false) {
+          widget.data[widget.index]['read'] = true;
           ref.read(score.notifier).state = ref.read(score) + 1;
           saveScore();
         }
@@ -79,18 +79,20 @@ class CustomFlipCardState extends ConsumerState<CustomFlipCard> {
                 ),
               ),
             ),
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: SizedBox(
-                  height: 140,
-                  child: Image.asset(
-                    widget.image,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
+            widget.image != ''
+                ? Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: SizedBox(
+                        height: 140,
+                        child: Image.asset(
+                          widget.image,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),

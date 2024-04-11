@@ -1,8 +1,10 @@
 import 'package:chinese_learning_app/dummy/dummy_data.dart';
+import 'package:chinese_learning_app/dummy/dummy_data_hospital.dart';
 import 'package:chinese_learning_app/global_variables/global_colors.dart';
 import 'package:chinese_learning_app/provider/provider.dart';
+import 'package:chinese_learning_app/screens/hospital/hospital_topic.dart';
 import 'package:chinese_learning_app/screens/rank.dart';
-import 'package:chinese_learning_app/screens/topic.dart';
+import 'package:chinese_learning_app/screens/classroom/topic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -32,7 +34,12 @@ class HomePageState extends ConsumerState<HomePage> {
       final int? score = prefs.getInt('score');
       if (score != null) {
         for (int i = 0; i < score; i++) {
-          DummyData.cardData[i]['read'] = true;
+          if (i < 20) {
+            DummyData.cardData[i]['read'] = true;
+          } else {
+            DummyDataHospital.cardData[i - DummyData.cardData.length]['read'] =
+                true;
+          }
         }
         return score;
       }
@@ -108,7 +115,7 @@ class HomePageState extends ConsumerState<HomePage> {
                                   borderRadius: BorderRadius.circular(10)),
                               child: Center(
                                 child: Text(
-                                  '🌟 ${total > 20 ? '20' : total}',
+                                  '🌟 $total',
                                   style: const TextStyle(color: Colors.white),
                                 ),
                               ),
@@ -194,6 +201,7 @@ class HomePageState extends ConsumerState<HomePage> {
                     children: [
                       GestureDetector(
                         onTap: () {
+                          ref.read(topic.notifier).state = 'classroom';
                           Navigator.pushNamed(context, TopicDetailPage.id);
                         },
                         child: const StudyCard(
@@ -201,6 +209,81 @@ class HomePageState extends ConsumerState<HomePage> {
                           text: 'Classroom',
                           textColor: Colors.black,
                           image: 'assets/images/classroom.png',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          if (total < 20) {
+                            Fluttertoast.showToast(
+                                msg: 'Please complete the topics above first');
+                          } else {
+                            ref.read(topic.notifier).state = 'hospital';
+                            Navigator.pushNamed(
+                                context, HospitalTopicDetailPage.id);
+                          }
+                        },
+                        child: StudyCard(
+                          color: Colors.white,
+                          text: 'Hospital',
+                          textColor: total >= 20
+                              ? Colors.black
+                              : Colors.black.withOpacity(0.6),
+                          image: 'assets/images/hospital.png',
+                          opacity: total >= 20 ? 0.6 : 0.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          ref.read(topic.notifier).state = 'friends';
+                          Fluttertoast.showToast(msg: 'Coming soon');
+                        },
+                        child: StudyCard(
+                          color: Colors.white,
+                          text: 'Friends',
+                          textColor: total > 60
+                              ? Colors.black
+                              : Colors.black.withOpacity(0.6),
+                          image: 'assets/images/friends.png',
+                          opacity: total > 60 ? 0.6 : 0.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          ref.read(topic.notifier).state = 'restaurant';
+                          Fluttertoast.showToast(msg: 'Coming soon');
+                        },
+                        child: StudyCard(
+                          color: Colors.white,
+                          text: 'Restaurant',
+                          textColor: total > 90
+                              ? Colors.black
+                              : Colors.black.withOpacity(0.6),
+                          image: 'assets/images/restaurant.png',
+                          opacity: total > 90 ? 0.6 : 0.4,
                         ),
                       ),
                     ],
@@ -221,11 +304,13 @@ class StudyCard extends StatefulWidget {
       required this.color,
       required this.text,
       required this.textColor,
-      this.image = ''});
+      this.image = '',
+      this.opacity = 0.6});
   final Color color;
   final String text;
   final Color textColor;
   final String image;
+  final double opacity;
 
   @override
   State<StudyCard> createState() => _StudyCardState();
@@ -243,7 +328,7 @@ class _StudyCardState extends State<StudyCard> {
         image: DecorationImage(
             image: AssetImage(widget.image),
             fit: BoxFit.fitWidth,
-            opacity: 0.6),
+            opacity: widget.opacity),
       ),
       child: Center(
         child: Text(

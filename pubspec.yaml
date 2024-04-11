@@ -71,6 +71,8 @@ flutter:
   assets:
     - assets/sound_clips/classroom/
     - assets/images/classroom/
+    - assets/sound_clips/hospital/
+    - assets/images/hospital/
     - assets/images/
     - assets/phrases/
     - assets/lottie/
