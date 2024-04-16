@@ -136,6 +136,7 @@ class WordsScreenState extends ConsumerState<WordsScreen> {
                                             ['color'] as Color,
                                         index: index,
                                         data: DummyData.cardData,
+                                        flipOnTouch: index <= total,
                                       ),
                                     ),
                                   ),

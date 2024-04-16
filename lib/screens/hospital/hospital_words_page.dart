@@ -124,6 +124,8 @@ class WordsScreenState extends ConsumerState<HospitalWordsScreen> {
                                             : 0.5,
                                     child: GestureDetector(
                                       onTap: () {
+                                        print(
+                                            '${ref.read(score) <= 20}? ${ref.read(score) >= index}: ${ref.read(score) <= 50}? ${ref.read(score) - DummyData.cardData.length >= index}: ${ref.read(score) - DummyData.cardData.length - DummyDataHospital.cardData.length >= index},');
                                         Fluttertoast.showToast(
                                             msg:
                                                 'Please read all the previous words to get the next word.');
@@ -148,6 +150,8 @@ class WordsScreenState extends ConsumerState<HospitalWordsScreen> {
                                             ['color'] as Color,
                                         index: index,
                                         data: DummyDataHospital.cardData,
+                                        flipOnTouch: index <=
+                                            total - DummyData.cardData.length,
                                       ),
                                     ),
                                   ),

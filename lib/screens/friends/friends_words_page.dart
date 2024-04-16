@@ -142,6 +142,7 @@ class FriendsWordsScreenState extends ConsumerState<FriendsWordsScreen> {
                                             ['color'] as Color,
                                         index: index,
                                         data: DummyDataFriends.cardData,
+                                        flipOnTouch: index <= total,
                                       ),
                                     ),
                                   ),

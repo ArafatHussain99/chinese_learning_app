@@ -172,7 +172,7 @@ class DummyDataFriends {
       'chinese': '电影',
       'soundAsset': 'assets/sound_clips/friends/19.m4a',
       'meaning': 'movie',
-      'image': 'assets/images/friends/19.png',
+      'image': '',
       'color': GlobalColors.secondary,
       'read': false,
     },

@@ -15,7 +15,8 @@ class CustomFlipCard extends ConsumerStatefulWidget {
       required this.image,
       required this.color,
       required this.index,
-      required this.data});
+      required this.data,
+      required this.flipOnTouch});
   final String soundAsset;
   final String meaning;
   final String word;
@@ -24,6 +25,7 @@ class CustomFlipCard extends ConsumerStatefulWidget {
   final Color color;
   final int index;
   final List<Map<String, Object>> data;
+  final bool flipOnTouch;
 
   @override
   CustomFlipCardState createState() => CustomFlipCardState();
@@ -54,7 +56,7 @@ class CustomFlipCardState extends ConsumerState<CustomFlipCard> {
           saveScore();
         }
       },
-      flipOnTouch: ref.read(score) >= widget.index,
+      flipOnTouch: widget.flipOnTouch,
       fill: Fill.fillBack,
       side: CardSide.FRONT,
       back: Container(
